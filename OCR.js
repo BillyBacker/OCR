@@ -3,17 +3,19 @@ export class OCR{
         this.isDone = false;
         this.text = '';
     }
-    Recongize(lang, pic, textID){
+    async recongize(lang, pic){
         console.log('starting...');
-        Tesseract.recognize(
+        var output = await Tesseract.recognize(
         pic,
         lang,
         { logger: m => console.log(m) }
         ).then(({ data: { text } }) => {
-        this.text = text;
-        this.isDone = true;
-        document.getElementById(textID).innerHTML = this.text;
+            this.text = text;
+            this.isDone = true;
+            console.log(text);
+            return Promise.resolve(text);
         })
+        return output;
     }
     reset(){
         this.isDone = false;
